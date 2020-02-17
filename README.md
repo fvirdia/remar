@@ -23,6 +23,41 @@ Unreliability of text parsing is also the reason why I did not implement any "de
 - [wxPython](https://wxpython.org/) for the ui,
 - [wxasync](https://github.com/sirk390/wxasync) for async/await support in wxPython.
 
+## How to install
+
+The following instructions were tested on a Xubuntu 18.04 clean install, but should probably apply to most Debian derivatives/easily translate to other distributions.
+
+Install wxPython:
+```
+$ sudo apt install python3-wxgtk4.0
+```
+
+Install wxasync (pip is the easiest way, but not the only one): 
+```
+$ sudo apt install python3-pip # in case you don't already have pip
+$ sudo pip3 install wxasync
+```
+
+Get a copy of rMAPI 0.0.9:
+```
+$ wget https://github.com/juruen/rmapi/releases/download/v0.0.9/rmapi-linuxx86-64.tar.gz
+$ tar xf rmapi-linuxx86-64.tar.gz
+```
+
+At this point you should have a local copy of the `rmapi` binary. Copy it into some directory that is part of your `PATH` (for now, will probably get around to making this optional later), so that you can run it from anywhere by just typing `rmapi`.
+
+Now, run `rmapi` for the first time. It will ask you a reMarkable one-time code to authenticate to the cloud, follow the instructions there.
+
+Finally, get a copy of Remar, and run it. For example:
+```
+$ git clone https://github.com/fvirdia/remar
+$ cd remar
+$ chmod +x remar.py
+$ ./remar.py
+```
+
+Of course, once everything is running, one can can create a desktop launcher pointing at `remar.py`, or add a symlink to `remar.py` somewhere in your `PATH`.
+
 ## Future
 
 I'm happy for someone more competent with desktop application development to pick up my slack and improve/clone/fork/steal Remar and run with it. 
