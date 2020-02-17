@@ -33,3 +33,5 @@ Having a better interface to rMAPI would also possibly allow someone to write a 
 ## License
 
 Remar is GPL3 licensed. It currently uses icons from the Tango Icon Library project, and wraps the [rMAPI](https://github.com/juruen/rmapi) command line client.
+
+In particular, I would like to stress the LICENSE disclaimer that there is no warranty of any kind that the client won't screw up your files, either on your personal computer, on the cloud, or anywhere else.
