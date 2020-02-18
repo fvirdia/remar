@@ -8,6 +8,7 @@
 import wx
 import wx.xrc
 import os.path
+import gui.icons
 
 ###########################################################################
 ## Class MainFrame
@@ -18,10 +19,9 @@ class MainFrame ( wx.Frame ):
 	def __init__( self, parent ):
 		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Remar", pos = wx.DefaultPosition, size = wx.Size( 697,463 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
-		prefix = os.path.dirname(os.path.realpath(__file__)) + "/"
-
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		# self.SetBackgroundColour( wx.Colour( 255, 255, 225 ) )
+		prefix = os.path.dirname(os.path.realpath(__file__)) + "/"
 
 		bOuterSizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -29,18 +29,23 @@ class MainFrame ( wx.Frame ):
 
 		self.m_homeButton = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( -1,-1 ), wx.BU_AUTODRAW|wx.BORDER_NONE|0 )
 
-		self.m_homeButton.SetBitmap( wx.Bitmap( prefix + u"icons/200px-Go-home-2.svg.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_homeButton.SetBitmap( wx.Bitmap( gui.icons.home, wx.BITMAP_TYPE_ANY ) )
 		bTopBarSizer.Add( self.m_homeButton, 0, wx.ALL, 5 )
 
 		self.m_folderUpButton = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|wx.BORDER_NONE|0 )
 
-		self.m_folderUpButton.SetBitmap( wx.Bitmap( prefix + u"icons/200px-Go-up.svg.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_folderUpButton.SetBitmap( wx.Bitmap( gui.icons.up, wx.BITMAP_TYPE_ANY ) )
 		bTopBarSizer.Add( self.m_folderUpButton, 0, wx.ALL, 5 )
 
 		self.m_refreshButton = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|wx.BORDER_NONE|0 )
 
-		self.m_refreshButton.SetBitmap( wx.Bitmap( prefix + u"icons/200px-View-refresh.svg.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_refreshButton.SetBitmap( wx.Bitmap( gui.icons.refresh, wx.BITMAP_TYPE_ANY ) )
 		bTopBarSizer.Add( self.m_refreshButton, 0, wx.ALL, 5 )
+
+		self.m_settingsButton = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|wx.BORDER_NONE|0 )
+
+		self.m_settingsButton.SetBitmap( wx.Bitmap( gui.icons.settings, wx.BITMAP_TYPE_ANY ) )
+		bTopBarSizer.Add( self.m_settingsButton, 0, wx.ALL, 5 )
 
 		self.m_locationBar = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( -1,-1 ), wx.TE_READONLY )
 		bTopBarSizer.Add( self.m_locationBar, 1, wx.ALL|wx.EXPAND, 5 )
@@ -72,12 +77,13 @@ class MainFrame ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.m_homeButton.Bind( wx.EVT_LEFT_UP, self.enter_home )
+		self.m_homeButton.Bind( wx.EVT_BUTTON, self.enter_home )
 		# from wxasync import AsyncBind
-		# AsyncBind( wx.EVT_LEFT_UP, self.enter_home, self.m_homeButton)
-		self.m_folderUpButton.Bind( wx.EVT_LEFT_UP, self.leave_directory )
-		self.m_refreshButton.Bind( wx.EVT_LEFT_UP, self.refresh_directory )
-		self.m_importButton.Bind( wx.EVT_LEFT_UP, self.import_file )
+		# AsyncBind( wx.EVT_BUTTON, self.enter_home, self.m_homeButton)
+		self.m_folderUpButton.Bind( wx.EVT_BUTTON, self.leave_directory )
+		self.m_refreshButton.Bind( wx.EVT_BUTTON, self.refresh_directory )
+		self.m_settingsButton.Bind( wx.EVT_BUTTON, self.settings_form )
+		self.m_importButton.Bind( wx.EVT_BUTTON, self.import_file )
 
 		# Make grid available
 		self.bFilesGridSizer = bFilesGridSizer
@@ -96,5 +102,8 @@ class MainFrame ( wx.Frame ):
 		event.Skip()
 
 	def refresh_directory( self, event ):
+		event.Skip()
+
+	def settings_form( self, event ):
 		event.Skip()
 

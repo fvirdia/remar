@@ -28,8 +28,12 @@ class rMAPIException(Exception):
 
 class rMAPIWrapper:
 
-    def __init__(self):
+    def __init__(self, binary="rmapi"):
         self.busy = False
+        self.binary = binary
+
+    def set_binary(self, binary):
+        self.binary = binary
 
     async def run_command(self, cmd, cwd=None):
         """Spans a rMAPI process to run a command and captrue its output.
@@ -41,7 +45,7 @@ class rMAPIWrapper:
             raise rMAPIException("Busy contacting server.")
 
         self.busy = True
-        ret = await run("rmapi %s" % cmd, cwd=cwd)
+        ret = await run("%s %s" % (self.binary, cmd), cwd=cwd)
         self.busy = False
         return ret
 

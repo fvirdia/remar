@@ -3,30 +3,83 @@
 
 
 import wx 
-from rmapi import rMAPIException, rMAPIWrapper
-from grid_elements import DirectoryWidget, FileWidget
+from backend.rmapi import rMAPIException, rMAPIWrapper
+from gui.grid_elements import DirectoryWidget, FileWidget
 from wxasync import AsyncBind, WxAsyncApp, StartCoroutine
 from asyncio.events import get_event_loop
 import asyncio
-import gui
+import gui.main
+import gui.settings
 from random import randint
 import wx.lib.newevent
 import os.path
+import os
+import configparser
 
 
 LoadingEvent, EVT_LOADING = wx.lib.newevent.NewEvent()
 
 
-class AppFrame(gui.MainFrame):
+class SettingsDialog(gui.settings.SettingsDialog):
+    def __init__(self, parent):
+        gui.settings.SettingsDialog.__init__(self, parent)
+        self.parent = parent
+        self.rMAPI_binary = self.parent.config["DEFAULT"].get("rMAPI_path", "rmapi")
+        self.m_rmapiFilePicker.SetPath(self.rMAPI_binary)
+
+    def rmapi_binary_changed( self, event ):
+        self.rMAPI_binary = event.GetPath()
+        event.Skip()
+
+    def apply_settings( self, event ):
+        if self.parent.loading:
+            self.parent.error("Busy loading")
+            return
+
+        # first, verify that the binary exists
+        if not os.path.isfile(self.rMAPI_binary):
+            self.parent.error("Binary doesn't exist.")
+            return
+
+        # and is executable
+        if not os.access(self.rMAPI_binary, os.X_OK):
+            self.parent.error("Binary is not executable.")
+            return
+
+        # and it's not this file (to avoid a loop)
+        if self.rMAPI_binary == os.path.realpath(__file__):
+            self.parent.error("Wrong rMAPI binary.")
+            return
+
+        # then, save setting and reload config
+        self.parent.config["DEFAULT"]["rMAPI_path"] = self.rMAPI_binary
+        with open(self.parent.config_file, 'w') as configfile:
+            self.parent.config.write(configfile)
+
+        self.parent.rmapi.set_binary(self.rMAPI_binary)
+
+        event.Skip()
+
+
+class AppFrame(gui.main.MainFrame):
 
     def __init__(self,parent):
-        gui.MainFrame.__init__(self,parent)
+        gui.main.MainFrame.__init__(self,parent)
         self.grid_content = []
         self.current_dir = ""
         self.error_count = 0
-        self.rmapi = rMAPIWrapper()
 
-         # Deal with "loading" feedback in the status bar
+        # load settings
+        self.config_file = os.path.expanduser("~") + "/.remar"
+        self.config = configparser.ConfigParser()
+        self.config.read(self.config_file)
+
+        # load api
+        # TODO: have both rMAPI and rmapy options
+        rmapi_binary = self.config["DEFAULT"].get("rMAPI_path", "rmapi")
+        self.rmapi = rMAPIWrapper(rmapi_binary)
+
+        # Deal with "loading" feedback in the status bar
         self.loading = False
         AsyncBind(EVT_LOADING, self.loading_status, self)
 
@@ -201,6 +254,11 @@ class AppFrame(gui.MainFrame):
             if path == "":
                 path = "/"
             StartCoroutine(self.open_directory(path), self)
+        event.Skip()
+
+    def settings_form( self, event ):
+        dialog = SettingsDialog(self)
+        dialog.Show(True)
         event.Skip()
 
 

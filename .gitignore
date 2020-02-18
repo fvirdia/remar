@@ -1,2 +1,5 @@
 __pycache__
+gui/__pycache__
+backend/__pycache__
 *.pyc
+.vscode
