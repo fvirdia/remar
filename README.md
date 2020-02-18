@@ -44,9 +44,9 @@ $ wget https://github.com/juruen/rmapi/releases/download/v0.0.9/rmapi-linuxx86-6
 $ tar xf rmapi-linuxx86-64.tar.gz
 ```
 
-At this point you should have a local copy of the `rmapi` binary. Copy it into some directory that is part of your `PATH` (for now, will probably get around to making this optional later), so that you can run it from anywhere by just typing `rmapi`.
+At this point you should have a local copy of the `rmapi` binary. Either copy it into some directory that is part of your `PATH`, or later use the settings dialog of Remar to select its location.
 
-Now, run `rmapi` for the first time in your command line. It will ask you a reMarkable one-time code to authenticate to the cloud, follow the instructions there.
+Now, run the `rmapi` binary for the first time in your command line. It will ask you a reMarkable one-time code to authenticate to the cloud, follow the instructions there.
 
 Finally, get a copy of Remar, and run it. For example:
 ```
