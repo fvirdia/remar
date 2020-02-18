@@ -109,6 +109,34 @@ class SettingsDialog ( wx.Dialog ):
 		self.m_aboutPanel = wx.Panel( self.m_notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer12 = wx.BoxSizer( wx.VERTICAL )
 
+		bSizer12.Add( ( 0, 0), 1, wx.EXPAND, 5 )
+
+		self.m_staticText6 = wx.StaticText( self.m_aboutPanel, wx.ID_ANY, u"Remar is a toy clone of the reMarkable cloud desktop app.", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText6.Wrap( -1 )
+
+		bSizer12.Add( self.m_staticText6, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 5 )
+
+		self.m_staticText9 = wx.StaticText( self.m_aboutPanel, wx.ID_ANY, u"Released under the GPL 3 license.", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText9.Wrap( -1 )
+
+		bSizer12.Add( self.m_staticText9, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+
+		self.m_staticText7 = wx.StaticText( self.m_aboutPanel, wx.ID_ANY, u"Developed by Fernando Virdia.", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText7.Wrap( -1 )
+
+		bSizer12.Add( self.m_staticText7, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+
+		self.m_staticText8 = wx.StaticText( self.m_aboutPanel, wx.ID_ANY, u"https://github.com/fvirdia/remar", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText8.Wrap( -1 )
+
+		self.m_staticText8.SetForegroundColour( wx.Colour( 0, 0, 160 ) )
+
+		bSizer12.Add( self.m_staticText8, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+
+
+		bSizer12.Add( ( 0, 0), 1, wx.EXPAND, 5 )
+
+
 
 		self.m_aboutPanel.SetSizer( bSizer12 )
 		self.m_aboutPanel.Layout()
