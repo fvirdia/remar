@@ -1,0 +1,33 @@
+{
+  "name": "remarjs",
+  "version": "0.1.0",
+  "description": "ReMarkable Cloud client",
+  "main": "main.js",
+  "scripts": {
+    "tsc": "tsc",
+    "watch": "tsc -w",
+    "start": "electron . --no-sandbox",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "Fernando Virdia",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/uuid": "^7.0.2",
+    "jquery": "^3.4.1",
+    "remarkable-typescript": "^1.0.5",
+    "uuid": "^7.0.2"
+  },
+  "build": {
+    "appId": "com.remar.app",
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.ui-progressbar {
+    position: relative;
+    background-color: #eee;
+    border-color: #ddd;
+    border-radius: 0;
+}
+
+.ui-widget.ui-widget-content{
+    border-color: #ddd;
+}
+
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.ui-progressbar-complete {
+    background-color: #eee;
+}
+
+.ui-progressbar .ui-progressbar-value {
+  height: 20px
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    cursor: wait;
+}

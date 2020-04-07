@@ -2,7 +2,7 @@
 
 ![Screenshot](/screenshots/main_window.png?raw=true "Remar's main window")
 
-Remar is a toy reMarkable cloud GUI alternative to the official reMarkable app. Remar is written in wxPython, and powered by the [rMAPI](https://github.com/juruen/rmapi) backend.
+Remar is a toy reMarkable cloud GUI alternative to the official reMarkable app.
 
 ## Why
 
@@ -10,63 +10,41 @@ While it is possible to run the official app through Wine, my personal experienc
 
 ## Bugs and Features
 
-Remar currently lets you navigate your reMarkable cloud, upload files, and extract them. Extraction of files has the same limitations that rMAPI has.
+The aim of Remar would be to imitate all the functionailty of the official client. Currently, only a small subset of features is supported:
 
-The whole experience will be particularly slow if your internet connection is poor. The reason being that for every single interaction, Remar launches a new instance or rMAPI, rather than using a single CLI process all along.
-While the api in `rmapi.py` would in principle allow to keep a single rMAPI instance open (making operations much faster), interacting with a CLI via standard input/output parsing can be unreliable, and I don't want to risk screwing up the files stored on the cloud.
+- Navigating the cloud file system
+- Uploading PDF files
+- Bookmarking files and directories
+- Moving, renaming, deleting files and directories
+- Searching for filenames
 
-Unreliability of text parsing is also the reason why I did not implement any "destructive" operations, such as "move", "rename" or "delete".
+## Install
 
-## Dependencies
-- [rMAPI](https://github.com/juruen/rmapi) 0.0.9, already authenticated with your cloud,
-- [Python](https://www.python.org/) 3.5+ (really, one just needs async/await support),
-- [wxPython](https://wxpython.org/) for the ui,
-- [wxasync](https://github.com/sirk390/wxasync) for async/await support in wxPython.
+The app is distributed as source, or as an AppImage that you can fetch from [Releases](https://github.com/fvirdia/remar/releases). Electron currently (wisely) runs in sandboxed mode by default. Yet, some versions of Debian and Ubuntu do not support this out of the box. In that case, running the binary with `--no-sandbox` as option should solve the issue.
 
-## How to install
+It should also be possible to repackage the app to run on macOS and Windows, although I have not tried that.
 
-The following instructions were tested on a Xubuntu 18.04 clean install, but should probably apply to most Debian derivatives/easily translate to other distributions.
+## Build form source
 
-Install wxPython:
+Install [Yarn](https://yarnpkg.com/).
+
+To fetch dependencies, run 
 ```
-$ sudo apt install python3-wxgtk4.0
-```
-
-Install wxasync (pip is the easiest way, but not the only one): 
-```
-$ sudo apt install python3-pip # in case you don't already have pip
-$ sudo pip3 install wxasync
+yarn
 ```
 
-Get a copy of rMAPI 0.0.9:
+To run the app as a developer, run
 ```
-$ wget https://github.com/juruen/rmapi/releases/download/v0.0.9/rmapi-linuxx86-64.tar.gz
-$ tar xf rmapi-linuxx86-64.tar.gz
-```
-
-At this point you should have a local copy of the `rmapi` binary. Either copy it into some directory that is part of your `PATH`, or later use the settings dialog of Remar to select its location.
-
-Now, run the `rmapi` binary for the first time in your command line. It will ask you a reMarkable one-time code to authenticate to the cloud, follow the instructions there.
-
-Finally, get a copy of Remar, and run it. For example:
-```
-$ git clone https://github.com/fvirdia/remar
-$ cd remar
-$ chmod +x remar.py
-$ ./remar.py
+yarn start
 ```
 
-Of course, once everything is running, one can can create a desktop launcher pointing at `remar.py`, or add a symlink to `remar.py` somewhere in your `PATH`.
-
-## Future
-
-I'm happy for someone more competent with desktop application development to pick up my slack and improve/clone/fork/steal Remar and run with it. 
-Personally, I would love to see a Python wrapper for rMAPI, so that each interaction could be implemented as a function call, rather than having to wrap their CLI. Then I would feel comfortable adding more functionality to the app, and the performance would also likely improve.
-
-Having a better interface to rMAPI would also possibly allow someone to write a FUSE driver for the reMarkable cloud, which would probably be the preferable solution for using the reMarkable with Linux.
+To generate the AppImage binary, run
+```
+yarn dist
+```
 
 ## License
 
-Remar is GPL3 licensed. It currently uses icons from the Tango Icon Library project, and wraps the [rMAPI](https://github.com/juruen/rmapi) command line client.
+Remar is MIT licensed. 
 
 In particular, I would like to stress the LICENSE disclaimer that there is no warranty of any kind that the client won't screw up your files, either on your personal computer, on the cloud, or anywhere else.

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Remar</title>
+
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/photon.css">
+  <link rel="stylesheet" href="css/custom-photon.css">
+  <link href="jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/jquery.css">
+</head>
+
+<body>
+  <!-- Wrap your entire app inside .window -->
+  <div class="window">
+    <!-- .toolbar-header sits at the top of your app -->
+    <header class="toolbar toolbar-header">
+      <!-- <h1 class="title">Photon</h1> -->
+
+      <div class="toolbar-actions">
+        <button class="btn btn-default" onclick="loadPath(current_path);">
+          <span class="icon icon-arrows-ccw"></span>
+        </button>
+
+        <div id="path-bar" class="btn-group">
+          <button class="btn btn-default" onclick="loadPath('');">
+            <span class="icon icon-home"></span>
+          </button>
+        </div>
+
+        <button class="btn btn-default pull-right" onclick="showSettings()">
+          <span class="icon icon-cog"></span>
+        </button>
+
+        <div id="path-bar" class="btn-group pull-right">
+          <!--button class="btn btn-default disabled" disabled>
+            <span class="icon icon-down-bold"></span>
+            Download
+          </button-->
+          <!--button id="copy-button" class="btn btn-default disabled" onclick="copyItems()" disabled>
+            <span class="icon icon-docs"></span>
+            <span>Copy</span>
+          </button-->
+          <button id="move-button" class="btn btn-default" onclick="cutItems()">
+            <span class="icon icon-logout"></span>
+            Move
+          </button>
+          <div id="paste-action" style="display: none" onclick="pasteItems()"></div>
+          <button class="btn btn-default" onclick="$('#rename-dialog').dialog('open');">
+            <span class="icon icon-pencil"></span>
+            Rename
+          </button>
+          <button class="btn btn-default" onclick="toggleBookmark()">
+            <span class="icon icon-star"></span>
+            Bookmark
+          </button>
+          <button class="btn btn-default" onclick="deleteItems()">
+            <span class="icon icon-trash"></span>
+            Delete
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Your app's content goes inside .window-content -->
+    <div class="window-content">
+      <div class="pane-group">
+        <div class="pane-sm sidebar">
+          <ul class="list-group">
+            <li class="list-group-header">
+              <input id="search-field" class="form-control" type="text" placeholder="Search for something">
+            </li>
+          </ul>
+          <nav class="nav-group">
+            <h5 class="nav-group-title">Actions</h5>
+            <!--div class="nav-group-item disabled">
+              <span class="icon icon-down-bold"></span>
+              Download
+            </div-->
+            <!--div class="nav-group-item disabled" onclick="$('#mkdir-dialog').dialog('open');">
+              <span class="icon icon-folder"></span>
+              New Folder
+            </div-->
+            <!-- <span class="nav-group-item"> -->
+            <label class="nav-group-item">
+              <span id="import-files-wait" class="icon icon-hourglass" hidden></span>
+              <span class="icon icon-download"></span>
+              Import
+              <input id="import-files" type="file" style="position: fixed; top: -100em" accept="application/pdf"
+                onchange="importFiles()" multiple>
+            </label>
+            <!-- </span> -->
+          </nav>
+          <nav class="nav-group">
+            <h5 class="nav-group-title">Filter by</h5>
+            <div class="nav-group-item" onclick="only_bookmarked.val = !only_bookmarked.val; loadPath(current_path);">
+              <span id="bookmarks-toggle" class="icon icon-bookmarks"></span>
+              Bookmarks
+            </div>
+            <!--div class="nav-group-item disabled">
+              <span class="icon icon-book-open"></span>
+              Notebooks
+            </div>
+            <div class="nav-group-item disabled">
+              <span class="icon icon-doc-text"></span>
+              Documents
+            </div>
+            <div class="nav-group-item disabled">
+              <span class="icon icon-book"></span>
+              Ebooks
+            </div-->
+          </nav>
+
+          <nav class="nav-group">
+            <h5 class="nav-group-title"><span id="drop-area-wait" class="icon icon-hourglass" hidden></span> Drop to
+              upload</h5>
+            <div id="drop-area"></div>
+          </nav>
+
+          <nav class="nav-group">
+            <div id="progressbar" style="margin: 6px 10px 0 10px; height: 18px;">
+              <!-- <div id="progress-label" class="progress-label">Loading...</div> -->
+            </div>
+          </nav>
+        </div>
+
+        <!-- Main  -->
+        <div class="pane">
+          <table id="file-list"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mkdir-dialog" title="Create new directory">
+    <input type="text" name="name" id="mkdir-dialog-name" placeholder="New folder" class="text ui-widget-content ui-corner-all">
+  </div>
+
+  <div id="rename-dialog" title="Rename items">
+    <input type="text" name="name" id="rename-dialog-name" placeholder="New name" class="text ui-widget-content ui-corner-all">
+  </div>
+
+  <div id="overlay"></div>
+
+  <!-- Electron Javascript -->
+  <script src="src/modules.js" charset="utf-8"></script>
+  <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <script src="src/utils.js" charset="utf-8"></script>
+  <script src="src/remarkable-fs.js" charset="utf-8"></script>
+  <script src="src/table.js" charset="utf-8"></script>
+  <script src="src/path-bar.js" charset="utf-8"></script>
+  <script src="src/settings.js" charset="utf-8"></script>
+  <script src="src/drag-n-drop.js" charset="utf-8"></script>
+  <script src="src/watchable-var.js" charset="utf-8"></script>
+  <script src="src/progressbar.js" charset="utf-8"></script>
+  <script src="src/glue.js" charset="utf-8"></script>
+  <script src="src/search.js" charset="utf-8"></script>
+  <script src="src/main.js" charset="utf-8"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.status-text {
+  /* based on .btn */
+  /* display: inline-block; */
+  flex: 1;
+  padding: 3px 8px;
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  /* text-align: center; */
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: default;
+  background-image: none;
+  border: 1px solid transparent;
+  /* border-radius: 4px; */
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06); */
+  -webkit-app-region: no-drag;
+
+  /* based on .btn-default */
+  color: #333;
+  border-top-color: #c2c0c2;
+  border-right-color: #c2c0c2;
+  border-bottom-color: #a19fa1;
+  border-left-color: #c2c0c2;
+  background-color: #fcfcfc;
+  /* background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fcfcfc), color-stop(100%, #f1f1f1)); */
+  /* background-image: -webkit-linear-gradient(top, #fcfcfc 0%, #f1f1f1 100%); */
+  /* background-image: linear-gradient(to bottom, #fcfcfc 0%, #f1f1f1 100%); */
+}
+
+/* based on toolbar-actions */
+.status-bar {
+  display: flex;
+  margin-top: 2px;
+  /* margin-bottom: 3px; */
+  /* padding-right: 3px; */
+  /* padding-left: 3px; */
+  /* padding-bottom: 3px; */
+  -webkit-app-region: drag;
+}
+
+.status-bar:before,
+.status-bar:after {
+  display: table;
+  content: " ";
+}
+
+.status-bar:after {
+  clear: both;
+}
+
+.status-bar>.btn,
+.status-bar>.btn-group {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+label.nav-group-item {
+  font-size: unset;
+  margin-bottom: 0;
+}
+
+#drop-area {
+  background-color: #eee;
+  margin: 2px 10px;
+  border: 1px solid #ddd;
+  display: flex;
+  height: 198px;
+  color: #eee; /* to make icon visible change to  #888; */
+}
+
+#drop-area::before {
+  content: '\e82d';
+  font-family: "photon-entypo";
+  font-size: 72pt;
+  text-align: center;
+  flex: 1;
+  line-height: 198px;
+}

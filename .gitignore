@@ -1,5 +1,6 @@
-__pycache__
-gui/__pycache__
-backend/__pycache__
-*.pyc
-.vscode
+.vscode/
+dist/
+examples/
+node_modules/
+package-lock.json
+yarn.lock

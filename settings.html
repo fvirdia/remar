@@ -1,0 +1,107 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title> -->
+<!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+<!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    We are using node <script>document.write(process.versions.node)</script>,
+    Chrome <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Settings</title>
+
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/photon.css">
+  <link rel="stylesheet" href="css/custom-photon.css">
+</head>
+
+<body>
+  <!-- Wrap your entire app inside .window -->
+  <div class="window">
+    <!-- Your app's content goes inside .window-content -->
+    <div class="window-content">
+      <div class="pane-group">
+        <div class="pane-sm sidebar">
+          <nav class="nav-group">
+            <h5 class="nav-group-title">Settings</h5>
+            <div class="nav-group-item">
+              Cloud
+            </div>
+            <!--div class="nav-group-item disabled">
+              Locales
+            </div-->
+          </nav>
+        </div>
+        <div id="cloud-pane" class="pane" style="padding: 15px">
+          To connect Remar to your reMarkable Cloud account, get a one-time code from <a href="https://my.remarkable.com/connect/desktop" target="_blank">https://my.remarkable.com/connect/desktop</a>.
+          <p>
+            <input id="otc" class="form-control" style="width: 80%" placeholder="One-time code">
+            <button id="connect-button" class="btn btn-large btn-positive" style="margin-bottom: 2px; padding-top: 7px;" onclick="getToken()">Connect</button>
+          </p>
+          <p>
+            <button class="btn btn-large btn-negative" style="margin-bottom: 2px; padding-top: 7px;" onclick="forgetToken()">Disconnect</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Electron Javascript -->
+  <script src="src/modules.js" charset="utf-8"></script>
+  <script src="src/utils.js" charset="utf-8"></script>
+  <script src="src/remarkable-fs.js" charset="utf-8"></script>
+  <script>
+    ipcRenderer.on('alert', (event, message) => {
+        window.alert(message);
+    });
+
+    const cloud_settings = new Store({
+      configName: 'cloud-settings',
+      defaults: {
+        token: undefined
+      }
+    });
+
+    function getToken() {
+      (async () => {
+        const client = new Remarkable();
+        const otc = document.getElementById('otc').value;
+        try {
+          let btn = document.getElementById('connect-button');
+          btn.innerText = "Wait...";
+          btn.disabled = true;
+          btn.classList.add('disabled');
+          const token = await client.register({ code: otc })
+          console.log(token);
+          cloud_settings.set('token', token);
+          ipcRenderer.send('refresh-main');
+        } catch (err) {
+          window.alert(err.name === "HTTPError" ? "Bad one-time code. Try getting a new one." : err.message);
+        }
+        btn.innerText = "Connect";
+        btn.disabled = false;
+        btn.classList.remove('disabled');
+      })();
+    }
+
+    function forgetToken() {
+      cloud_settings.set('token', '');
+      window.alert('Close Remar to apply the change.');
+    }
+  </script>
+
+</body>
+
+</html>
