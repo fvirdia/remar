@@ -24,6 +24,8 @@ The app is distributed as source, or as an AppImage that you can fetch from [Rel
 
 It should also be possible to repackage the app to run on macOS and Windows, although I have not tried that.
 
+Note, the AppImage is relatively large, due to containing the Electron runtime. It may be faster to run the application from source.
+
 ## Build form source
 
 Install [Yarn](https://yarnpkg.com/).
